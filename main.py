@@ -1,4 +1,4 @@
-import os, sys
+import sys, argparse
 from PIL import Image
 
 #Converts a binary string into a normal text string.
@@ -39,27 +39,59 @@ def extract_Image(image_data, number_of_bits, index):
         bit_string += extract_last_bit(blue)
     return bit_string[:number_of_bits]
 
-def extract_text_length(image_data):
+def extract_text_length(image_data, string_length_starting_pixel):
     binary_length = extract_Image(image_data, binary_message_length, string_length_starting_pixel)
     length2 = int(binary_length, 2)
     return length2
 
 binary_message_length = 32
-image = Image.open('testImage.png')
-image_data = list(image.getdata())
-length, height = image.size
-maxSize = (length * height) - 1
-string_length_starting_pixel = maxSize
-string_text_starting_pixel = maxSize - 11
 
-#Debugging stuff
-print(maxSize)
-print("Number of arguments:", len(sys.argv))
-print("Arguments:", str(sys.argv))
-#print(image_data[maxSize])
+def main(input_file, output_file, text, encrypt):
+    image = Image.open(input_file)
+    image_data = list(image.getdata())
+    length, height = image.size
+    maxSize = (length * height) - 1
+    string_length_starting_pixel = maxSize
+    string_text_starting_pixel = maxSize - 11
 
-num_bits_to_extract = extract_text_length(image_data)
-#print(num_bits_to_extract)
-message = extract_Image(image_data, num_bits_to_extract, string_text_starting_pixel)
-message = bin_to_string(message)
-print(message)
+    if encrypt:
+        print("Nothing")
+        #Blank for now
+    else:
+        #print(num_bits_to_extract)
+        num_bits_to_extract = extract_text_length(image_data, string_length_starting_pixel)
+        message = extract_Image(image_data, num_bits_to_extract, string_text_starting_pixel)
+        message = bin_to_string(message)
+        print(message)
+
+        #Debugging stuff
+        print(maxSize)
+        print("Number of arguments:", len(sys.argv))
+        print("Arguments:", str(sys.argv))
+        #print(image_data[maxSize])
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Embeds text inside an image.')
+    group = parser.add_mutually_exclusive_group(required=True)
+
+    group.add_argument('-e', action='store_true', default=False)
+    group.add_argument('-d', action='store_true', default=False)
+
+    parser.add_argument('input_image', help='Image to embed text in')
+
+    parser.add_argument('-t', help='Text to embed')
+    parser.add_argument('-o', help='Name of output file', default=None)
+
+    args = parser.parse_args()
+
+    if args.e and not args.t and not args.o:
+        print('If encrypting text is required')
+        sys.exit(0)
+
+    main(args.input_image, args.o, args.t, args.e)
