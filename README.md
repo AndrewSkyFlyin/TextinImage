@@ -4,6 +4,8 @@ This program embeds a text message inside an image.
 It uses jpg/jpeg images to embed messages and saves as a png file.
 The message is stored in each pixel starting from the bottom right side of the image to the left side.
 
+The file eternal.png is a test image that contains embedded text of the source code.
+
 Example:
 ```
 $ python main.py -e -i "cat.jpg" -o "cat.png" -t "I am hidden in the shadow of pixels."
