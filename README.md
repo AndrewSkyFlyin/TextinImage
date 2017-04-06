@@ -10,6 +10,12 @@ $ python main.py -e -i "cat.jpg" -o "cat.png" -t "I am hidden in the shadow of p
 $ python main.py -d -i "cat.png"
 I am hidden in the shadow of pixels."
 ```
+or
+```
+$ python main.py -e -i "cat.jpg" -o "cat.png" -g "test.txt"
+$ python main.py -d -i "cat.png"
+I am hidden in the shadow of pixels."
+```
 Arguments:
 
 -e: Specifies embedding a message into an image.
@@ -21,3 +27,5 @@ Arguments:
 -o: The output png file.
 
 -t: The contents of the message you wish to embed.
+
+-g: Used to embed messages read from a text file.  Cannot be used together with -t.
