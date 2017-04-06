@@ -147,7 +147,7 @@ def embed_in_image(image_data, text, index, max_pixel_capacity):
 binary_message_length = 32
 
 
-def main(input_file, output_file, text, encrypt):
+def main(input_file, output_file, text, encrypt, text_path):
     image = Image.open(input_file)
     image_data = list(image.getdata())
     length, height = image.size
@@ -156,8 +156,15 @@ def main(input_file, output_file, text, encrypt):
     string_length_starting_pixel = max_size
     string_text_starting_pixel = max_size - 11
 
+    if text_path:
+        with open (text_path, "r") as myfile:
+            text2 = myfile.read()
+
     if encrypt:
-        updated_image = embed_in_image(image_data, text, max_size, max_pixel_capacity)
+        if text_path:
+            updated_image = embed_in_image(image_data, text2, max_size, max_pixel_capacity)
+        else:
+            updated_image = embed_in_image(image_data, text, max_size, max_pixel_capacity)
         image.putdata(updated_image)
         image.save(output_file, 'PNG')
     else:
@@ -182,13 +189,14 @@ if __name__ == '__main__':
     group.add_argument('-d', action='store_true', help='To specify decrypt', default=False)
 
     parser.add_argument('-i', help='Image to embed text in')
+    parser.add_argument('-g', help='Text from text file to embed from')
 
     parser.add_argument('-t', help='Text to embed')
     parser.add_argument('-o', help='Name of output file', default=None)
 
     args = parser.parse_args()
 
-    if args.e and not args.t:
+    if args.e and not args.t and not args.g:
         print('No message was inputted')
         sys.exit(0)
 
@@ -196,4 +204,4 @@ if __name__ == '__main__':
         print('No output file was specified')
         sys.exit(0)
 
-    main(args.i, args.o, args.t, args.e)
+    main(args.i, args.o, args.t, args.e, args.g)
