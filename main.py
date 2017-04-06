@@ -1,6 +1,16 @@
 import sys, argparse
 from PIL import Image
 
+def bit_string_to_8bits(bit_string):
+    preceding_zeroes = '0' * (8 - len(bit_string))
+    full_string = preceding_zeroes + bit_string
+    return full_string
+
+def bit_string_to_32bits(bit_string):
+    preceding_zeroes = '0' * (32 - len(bit_string))
+    full_string = preceding_zeroes + bit_string
+    return full_string
+
 #Converts a binary string into a normal text string.
 def bin_to_string(binary):
     #Splits the binary into an array by chunks of 8 characters long.
@@ -44,6 +54,12 @@ def extract_text_length(image_data, string_length_starting_pixel):
     length2 = int(binary_length, 2)
     return length2
 
+def embed_in_image(image_data, text):
+    num_bits_to_embed = num_bits_in_string(text)
+    num_bits_to_embed = format(num_bits_to_embed, 'b')
+    num_bits_to_embed = bit_string_to_32bits(num_bits_to_embed)
+
+
 binary_message_length = 32
 
 def main(input_file, output_file, text, encrypt):
@@ -83,15 +99,20 @@ if __name__ == '__main__':
     group.add_argument('-e', action='store_true', default=False)
     group.add_argument('-d', action='store_true', default=False)
 
-    parser.add_argument('input_image', help='Image to embed text in')
+    parser.add_argument('-i', help='Image to embed text in')
 
     parser.add_argument('-t', help='Text to embed')
     parser.add_argument('-o', help='Name of output file', default=None)
 
     args = parser.parse_args()
 
-    if args.e and not args.t and not args.o:
-        print('If encrypting text is required')
+
+    if args.e and not args.t:
+        print('No message was inputted')
         sys.exit(0)
 
-    main(args.input_image, args.o, args.t, args.e)
+    if args.e and not args.o:
+        print('No output file was specified')
+        sys.exit(0)
+
+    main(args.i, args.o, args.t, args.e)
