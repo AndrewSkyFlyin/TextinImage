@@ -2,7 +2,7 @@
 
 This program embeds a text message inside an image.
 It uses jpg/jpeg images to embed messages and saves as a png file.
-The message is stored in each pixel starting from the bottom right side of the image.
+The message is stored in each pixel starting from the bottom right side of the image to the left side.
 
 Example:
 ```
