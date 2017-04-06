@@ -12,7 +12,11 @@ I am hidden in the shadow of pixels."
 ```
 Arguments:
 -e: Specifies embedding a message into an image.
+
 -d: Specifies extracting a message from an image.
+
 -i: The input jpeg file.
+
 -o: The output png file.
+
 -t: The contents of the message you wish to embed.
