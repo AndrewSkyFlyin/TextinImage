@@ -11,6 +11,7 @@ $ python main.py -d -i "cat.png"
 I am hidden in the shadow of pixels."
 ```
 Arguments:
+
 -e: Specifies embedding a message into an image.
 
 -d: Specifies extracting a message from an image.
