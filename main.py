@@ -178,8 +178,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Embeds text inside an image.')
     group = parser.add_mutually_exclusive_group(required=True)
 
-    group.add_argument('-e', action='store_true', default=False)
-    group.add_argument('-d', action='store_true', default=False)
+    group.add_argument('-e', action='store_true', help='To specify encrypt', default=False)
+    group.add_argument('-d', action='store_true', help='To specify decrypt', default=False)
 
     parser.add_argument('-i', help='Image to embed text in')
 
