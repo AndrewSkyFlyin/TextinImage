@@ -148,22 +148,22 @@ binary_message_length = 32
 
 
 def main(input_file, output_file, text, encrypt, text_path):
-    image = Image.open(input_file)
-    image_data = list(image.getdata())
+    image = Image.open(input_file)      # Opens the input image jpeg.
+    image_data = list(image.getdata())  # Retrieves jpeg data into variable.
     length, height = image.size
-    max_size = (length * height) - 1
-    max_pixel_capacity = (max_size * 3) - 33
-    string_length_starting_pixel = max_size
-    string_text_starting_pixel = max_size - 11
+    max_size = (length * height) - 1    # Calculate max pixel index for embed/extraction purposes.
+    max_pixel_capacity = (max_size * 3) - 33    # Calculates maximum pixel capacity.
+    string_length_starting_pixel = max_size     # Index for message length starting location.
+    string_text_starting_pixel = max_size - 11  # Index for location of actual message starting location.
 
-    if text_path:
+    if text_path:       # Reads text from text file if one was given.
         with open (text_path, "r") as myfile:
             text2 = myfile.read()
 
     if encrypt:
-        if text_path:
+        if text_path:  # If text input source is a text file, use this function.  Otherwise, use the else one.
             updated_image = embed_in_image(image_data, text2, max_size, max_pixel_capacity)
-        else:
+        else: # If text input source is command line input.
             updated_image = embed_in_image(image_data, text, max_size, max_pixel_capacity)
         image.putdata(updated_image)
         image.save(output_file, 'PNG')
